@@ -30,11 +30,10 @@ const createContact = async (req, res) => {
     //#swagger.tags=['Contacts']
     try {
         const contact = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
             email: req.body.email,
-            favoriteColor: req.body.favoriteColor,
-            birthday: req.body.birthday
+            username: req.body.username,
+            name: req.body.name,
+            ipadress: req.body.ipaddress
         };
         const result = await db.getDatabase().db().collection('contacts').insertOne(contact);
         console.log("Inserted result:", result);
@@ -50,11 +49,10 @@ const updateContact = async (req, res) => {
     try {
         const contactId = new ObjectId(req.params.id)
         const contact = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
             email: req.body.email,
-            favoriteColor: req.body.favoriteColor,
-            birthday: req.body.birthday
+            username: req.body.username,
+            name: req.body.name,
+            ipadress: req.body.ipaddress
         };
         const result = await db.getDatabase().db().collection('contacts').updateOne(
             {_id: contactId},
