@@ -5,8 +5,8 @@ const doc = {
     title: 'My API',
     description: 'W02 Project: Contacts Part 2 - Swagger File' 
 },
-  host: 'localhost:3000',
-  schemes: ['http', 'https']
+  host: process.env.RENDER_EXTERNAL_URL ? process.env.RENDER_EXTERNAL_URL.split('https://')[1] : 'localhost:3000',
+  schemes: process.env.RENDER_EXTERNAL_URL ? ['https'] : ['http']
 };
 
 const outputFile = './swagger-output.json';
