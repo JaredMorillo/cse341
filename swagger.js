@@ -5,8 +5,8 @@ const doc = {
     title: 'My API',
     description: 'W02 Project: Contacts Part 2 - Swagger File' 
 },
-  host: process.env.NODE_ENV === 'production' ? 'cse341-vcsw.onrender.com' : 'localhost:3000',
-  schemes: process.env.NODE_ENV === 'production' ? ['https'] : ['http'],
+  host: process.env.RENDER_EXTERNAL_URL ? process.env.RENDER_EXTERNAL_URL.replace(/^https?:\/\//, '') : (process.env.NODE_ENV === 'production' ? 'cse341-vcsw.onrender.com' : 'localhost:3000'),
+  schemes: process.env.RENDER_EXTERNAL_URL ? [process.env.RENDER_EXTERNAL_URL.startsWith('https') ? 'https' : 'http'] : (process.env.NODE_ENV === 'production' ? ['https'] : ['http']),
   tags: [
     {
       name: 'Contacts',
