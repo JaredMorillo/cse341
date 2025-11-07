@@ -6,7 +6,7 @@ const doc = {
     description: 'W02 Project: Contacts Part 2 - Swagger File' 
 },
   host: 'localhost:3000',
-  schemes: ['https', 'http']
+  schemes: ['http', 'https']
 };
 
 const outputFile = './swagger-output.json';
