@@ -1,2 +1,4 @@
 node_modules
 .env
+swagger-config.js
+swagger-output.json
