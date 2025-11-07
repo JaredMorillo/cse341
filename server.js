@@ -2,7 +2,17 @@ const express = require("express");
 const app = express();
 const routes = require("./routes");
 const db = require("./database/db");
-const BodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const cors = require('cors');
+
+// CORS configuration
+const corsOptions = {
+  origin: '*', // Be more specific in production
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
