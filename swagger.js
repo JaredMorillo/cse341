@@ -2,35 +2,22 @@ const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {
   info: {
-    title: 'My API',
-    description: 'W02 Project: Contacts Part 2 - Swagger File' 
-},
-  host: process.env.RENDER_EXTERNAL_URL ? process.env.RENDER_EXTERNAL_URL.replace(/^https?:\/\//, '') : (process.env.NODE_ENV === 'production' ? 'cse341-vcsw.onrender.com' : 'localhost:3000'),
-  schemes: process.env.RENDER_EXTERNAL_URL ? [process.env.RENDER_EXTERNAL_URL.startsWith('https') ? 'https' : 'http'] : (process.env.NODE_ENV === 'production' ? ['https'] : ['http']),
-  tags: [
-    {
-      name: 'Contacts',
-      description: 'API endpoints for managing contacts'
-    }
-  ],
-  securityDefinitions: {
-    // You can add auth definitions here if needed
+    title: 'CSE 341 API',
+    description: 'API Documentation for CSE 341',
   },
-  definitions: {
-    Contact: {
-      type: 'object',
-      properties: {
-        firstName: { type: 'string' },
-        lastName: { type: 'string' },
-        email: { type: 'string' },
-        favoriteColor: { type: 'string' },
-        birthday: { type: 'string' }
-      }
-    }
-  }
+  host: 'localhost:3000',
+  schemes: ['http', 'https'],
+  securityDefinitions: {
+    apiKeyAuth: {
+      type: 'apiKey',
+      in: 'header',
+      name: 'X-API-Key',
+      description: 'Your API Key',
+    },
+  },
 };
 
 const outputFile = './swagger-output.json';
-const routes = ['./routes/index.js'];
+const routes = ['./server.js', './routes/*.js'];
 
 swaggerAutogen(outputFile, routes, doc);
