@@ -5,7 +5,7 @@ const doc = {
     title: 'CSE 341 API',
     description: 'API Documentation for CSE 341',
   },
-  host: ['localhost:3000', 'cse341-vcsw.onrender.com'],
+  host: 'localhost:3000',
   schemes: ['http', 'https'],
   securityDefinitions: {
     apiKeyAuth: {
