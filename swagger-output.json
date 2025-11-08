@@ -2,10 +2,10 @@
   "swagger": "2.0",
   "info": {
     "title": "My API",
-    "description": "W02 Project: Contacts Part 2 - Swagger File",
+    "description": "Contacts API Documentation",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "cse341-vcsw.onrender.com",
   "basePath": "/",
   "tags": [
     {
