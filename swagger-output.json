@@ -5,7 +5,7 @@
     "description": "API Documentation for CSE 341",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "cse341-vcsw.onrender.com/",
   "basePath": "/",
   "schemes": [
     "http",
