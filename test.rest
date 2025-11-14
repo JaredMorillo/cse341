@@ -4,7 +4,7 @@ GET http://cse341-vcsw.onrender.com/contacts
 
 
 ### Get contact by id
-GET http://cse341-vcsw.onrender.com/contacts/67d79fbbfb1ad26c88baeae5
+GET http://cse341-vcsw.onrender.com/contacts/69176a573398a749a47a8779
 
 
 ### Create contact
@@ -14,22 +14,22 @@ Content-Type: application/json
 {
 "firstName": "Sam",
 "lastName": "Johnson",
-"email": "daniel@johnson.com",
+"email": "sam@example.com",
 "favoriteColor": "Green",
 "birthday": "1990-05-15"
 }
 
 ###Update a contact
-PUT http://cse341-vcsw.onrender.com/contacts/67d79fbbfb1ad26c88baeaee
+PUT http://cse341-vcsw.onrender.com/contacts/69176a573398a749a47a8779
 Content-Type: application/json
 
 {
 "firstName": "Daniel",
 "lastName": "Johnson",
-"email": "daniel@johnson.com",
+"email": "daniel@example.com",
 "favoriteColor": "Green",
 "birthday": "1990-05-15"
 }
 
 ###Delete a contact
-DELETE http://cse341-vcsw.onrender.com/contacts/69176f903398a749a47a877b
+DELETE http://cse341-vcsw.onrender.com/contacts/6917865f055f6d207cb878fd
