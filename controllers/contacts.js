@@ -1,33 +1,32 @@
 const db = require("../database/db");
-const ObjectId = require('mongodb').ObjectId; //Unique object id that Mongo assigns to each document
+const { ObjectId } = require('mongodb');
 
 const getAll = async (req, res) => {
-    //#swagger.tags=['Contacts']
     try {
-        const result = await db.getDatabase().db().collection('contacts').find() //The correct databases's name was already included in th URL
-        result.toArray().then((contacts) => {
-            res.setHeader('Content-Type', 'application/json')
-            res.status(200).json(contacts)
-        });    
-    } catch (error) {
-        console.error('Connection failed', error)
-        throw error
+        const lists = await db.getDatabase().db().collection('contacts').find().toArray();
+        res.status(200).json(lists);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching contacts', error: err.message });
     }
 };
 
 const getSingle = async (req, res) => {
-    //#swagger.tags=['Contacts']
+    if (!ObjectId.isValid(req.params.id)) {
+        return res.status(400).json('Must use a valid contact id to find a contact.');
+    }
     try {
         const contactId = new ObjectId(req.params.id);
-        const result = await db.getDatabase().db().collection('contacts').findOne({_id: contactId}) //The correct databases's name was already included in th URL
-        res.status(200).json(result)
-    } catch (error) {
-        res.status(500).json({error: "Internal Error"})
+        const result = await db.getDatabase().db().collection('contacts').find({ _id: contactId }).toArray();
+        if (!result[0]) return res.status(404).json({ message: 'Contact not found' });
+        res.status(200).json(result[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching contact', error: err.message });
     }
 };
 
 const createContact = async (req, res) => {
-    //#swagger.tags=['Contacts']
     try {
         const contact = {
             firstName: req.body.firstName,
@@ -36,19 +35,24 @@ const createContact = async (req, res) => {
             favoriteColor: req.body.favoriteColor,
             birthday: req.body.birthday
         };
-        const result = await db.getDatabase().db().collection('contacts').insertOne(contact);
-        console.log("Inserted result:", result);
-        res.status(201).json({ message: "New Contact Created", id: result.insertedId });
-    } catch (error) {
-        res.status(500).json({ error: "Internal Error" });
+        const response = await db.getDb().db().collection('contacts').insertOne(contact);
+        if (response.acknowledged) {
+            res.status(201).json(response);
+        } else {
+            res.status(500).json({ message: 'Error creating contact' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error creating contact', error: err.message });
     }
-}
-
+};
 
 const updateContact = async (req, res) => {
-    //#swagger.tags=['Contacts']
+    if (!ObjectId.isValid(req.params.id)) {
+        return res.status(400).json('Must use a valid contact id to update a contact.');
+    }
     try {
-        const contactId = new ObjectId(req.params.id)
+        const contactId = new ObjectId(req.params.id);
         const contact = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -56,33 +60,34 @@ const updateContact = async (req, res) => {
             favoriteColor: req.body.favoriteColor,
             birthday: req.body.birthday
         };
-        const result = await db.getDatabase().db().collection('contacts').updateOne(
-            {_id: contactId},
-            {$set: contact}
-        );
-        
-        if (result.matchedCount === 0) {
-            return res.status(404).send('Contact not found');
+        const response = await db.getDb().db().collection('contacts').replaceOne({ _id: contactId }, contact);
+        if (response.modifiedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(404).json({ message: 'Contact not found or no changes made' });
         }
-
-        res.status(200).send('Contact updated successfully')    
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error updating contact');
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error updating contact', error: err.message });
     }
-}
+};
 
 const deleteContact = async (req, res) => {
-    //#swagger.tags=['Contacts']
-    try {
-        const result = await db.getDatabase().db().collection('contacts').deleteOne({_id: new ObjectId(req.params.id)});
-        console.log("Deletion result:", result);
-        res.status(200).send('Contact deleted successfully') 
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error updating contact');
+    if (!ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error: "Invalid contact ID" });
     }
-}
+    try {
+        const contactId = new ObjectId(req.params.id);
+        const result = await db.getDatabase().db().collection('contacts').deleteOne({ _id: contactId });
+        if (result.deletedCount > 0) {
+            res.status(200).send('Contact deleted successfully');
+        } else {
+            res.status(404).json({ message: 'Contact not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error deleting contact', error: err.message });
+    }
+};
 
-module.exports = {getAll, getSingle, createContact, updateContact, deleteContact}
+module.exports = { getAll, getSingle, createContact, updateContact, deleteContact };

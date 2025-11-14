@@ -3,21 +3,13 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'CSE 341 API',
-    description: 'API Documentation for CSE 341',
+    description: 'API Documentation for CSE 341'
   },
-  host: 'localhost:3000',
-  schemes: ['http', 'https'],
-  securityDefinitions: {
-    apiKeyAuth: {
-      type: 'apiKey',
-      in: 'header',
-      name: 'X-API-Key',
-      description: 'Your API Key',
-    },
-  },
+  host: 'cse341-vcsw.onrender.com',
+  schemes: ['https']
 };
 
 const outputFile = './swagger-output.json';
-const routes = ['./server.js', './routes/*.js'];
+const endpointsFiles = ['./routes/index.js'];
 
-swaggerAutogen(outputFile, routes, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc);
