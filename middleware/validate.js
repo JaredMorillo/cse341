@@ -18,16 +18,6 @@ const saveContact = (req, res, next) => {
       });
     }
     
-    // Validación adicional: email debe contener @ y un dominio válido
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(req.body.email)) {
-      return res.status(412).json({
-        success: false,
-        message: 'Email must be valid with @ symbol and domain',
-        data: { email: ['Email format is invalid. Must include @ and a domain (e.g., user@example.com)'] }
-      });
-    }
-    
     next();
   });
 };

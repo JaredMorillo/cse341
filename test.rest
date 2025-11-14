@@ -12,9 +12,9 @@ POST http://cse341-vcsw.onrender.com/contacts
 Content-Type: application/json
 
 {
-"firstName": "John",
-"lastName": "Doe",
-"email": "johndoe@example.com",
+"firstName": "Sam",
+"lastName": "Johnson",
+"email": "daniel@johnson.com",
 "favoriteColor": "Green",
 "birthday": "1990-05-15"
 }
@@ -32,4 +32,4 @@ Content-Type: application/json
 }
 
 ###Delete a contact
-DELETE http://cse341-vcsw.onrender.com/contacts/67d7a8b885a39f45d5a5721a
+DELETE http://cse341-vcsw.onrender.com/contacts/69176f903398a749a47a877b

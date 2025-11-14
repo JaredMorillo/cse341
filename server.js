@@ -25,7 +25,8 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
 
 const options = {
-  explorer: true
+  explorer: true,
+  deepLinking: false
 };
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));

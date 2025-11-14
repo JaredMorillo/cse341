@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const getAll = async (req, res) => {
     try {
-        const lists = await db.getDatabase().db().collection('contacts').find().toArray();
+        const lists = await db.getDatabase().collection('contacts').find().toArray();
         res.status(200).json(lists);
     } catch (err) {
         console.error(err);
@@ -13,13 +13,13 @@ const getAll = async (req, res) => {
 
 const getSingle = async (req, res) => {
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).json('Must use a valid contact id to find a contact.');
+        return res.status(400).json({ error: 'Must use a valid contact id' });
     }
     try {
         const contactId = new ObjectId(req.params.id);
-        const result = await db.getDatabase().db().collection('contacts').find({ _id: contactId }).toArray();
-        if (!result[0]) return res.status(404).json({ message: 'Contact not found' });
-        res.status(200).json(result[0]);
+        const result = await db.getDatabase().collection('contacts').findOne({ _id: contactId });
+        if (!result) return res.status(404).json({ message: 'Contact not found' });
+        res.status(200).json(result);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error fetching contact', error: err.message });
@@ -35,12 +35,8 @@ const createContact = async (req, res) => {
             favoriteColor: req.body.favoriteColor,
             birthday: req.body.birthday
         };
-        const response = await db.getDb().db().collection('contacts').insertOne(contact);
-        if (response.acknowledged) {
-            res.status(201).json(response);
-        } else {
-            res.status(500).json({ message: 'Error creating contact' });
-        }
+        const response = await db.getDatabase().collection('contacts').insertOne(contact);
+        res.status(201).json(response);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error creating contact', error: err.message });
@@ -49,7 +45,7 @@ const createContact = async (req, res) => {
 
 const updateContact = async (req, res) => {
     if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).json('Must use a valid contact id to update a contact.');
+        return res.status(400).json({ error: 'Must use a valid contact id' });
     }
     try {
         const contactId = new ObjectId(req.params.id);
@@ -60,7 +56,7 @@ const updateContact = async (req, res) => {
             favoriteColor: req.body.favoriteColor,
             birthday: req.body.birthday
         };
-        const response = await db.getDb().db().collection('contacts').replaceOne({ _id: contactId }, contact);
+        const response = await db.getDatabase().collection('contacts').replaceOne({ _id: contactId }, contact);
         if (response.modifiedCount > 0) {
             res.status(204).send();
         } else {
@@ -78,9 +74,9 @@ const deleteContact = async (req, res) => {
     }
     try {
         const contactId = new ObjectId(req.params.id);
-        const result = await db.getDatabase().db().collection('contacts').deleteOne({ _id: contactId });
+        const result = await db.getDatabase().collection('contacts').deleteOne({ _id: contactId });
         if (result.deletedCount > 0) {
-            res.status(200).send('Contact deleted successfully');
+            res.status(200).json({ message: 'Contact deleted successfully' });
         } else {
             res.status(404).json({ message: 'Contact not found' });
         }
